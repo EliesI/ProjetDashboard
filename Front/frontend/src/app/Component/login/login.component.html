@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-9 col-lg-12 col-xl-10">
+      <div class="card shadow-lg o-hidden border-0 my-5">
+        <div class="card-body p-0">
+          <div class="row">
+            <div class="col-lg-6 d-none d-lg-flex">
+              <div class="flex-grow-1 bg-login-image" style="background-image: url(&quot;assets/img/dogs/image3.jpeg&quot;);"></div>
+            </div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                <div class="text-center">
+                  <h4 class="text-dark mb-4">Welcome Back!</h4>
+                </div>
+                <form class="user" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
+                  <div class="mb-3">
+                    <label for="username">Email</label>
+                    <input type="text" class="form-control" name="username" id="username" [(ngModel)]="form.username" required #username="ngModel" />
+                    <div class="alert alert-danger" role="alert" *ngIf="f.submitted && username.invalid">Username is required!</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" name="password" id="password" [(ngModel)]="form.password" required minlength="6" #password="ngModel">
+                  </div>
+                  <button class="btn btn-primary d-block btn-user w-100" type="submit">Login</button>
+                  <hr>
+                    <a class="btn btn-primary d-block btn-google btn-user w-100 mb-2" role="button" href="{{ googleURL }}">
+                      <i class="fab fa-google"></i>&nbsp; Login with Google
+                    </a>
+                  <hr>
+                </form>
+                <div class="text-center"><a class="small" href="forgot-password.html">Forgot Password?</a></div>
+                <div class="text-center"><a class="small" href="/register">Create an Account!</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="assets/bootstrap/js/bootstrap.min.js"></script>
+<script src="assets/js/bs-init.js"></script>
+<script src="assets/js/theme.js"></script>

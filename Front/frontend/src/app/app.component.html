@@ -1,0 +1,405 @@
+<div id="wrapper">
+  <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+    <div class="container-fluid d-flex flex-column p-0"><a
+        class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+        <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+        <div class="sidebar-brand-text mx-3"><span>Double Dash</span></div>
+      </a>
+      <hr class="sidebar-divider my-0">
+      <ul class="navbar-nav text-light" id="accordionSidebar">
+        <li class="nav-item"><a class="nav-link active" href="#"><i
+              class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+        <div *ngIf="!isAdmin">
+          <li class="nav-item" *ngIf="isLoggedIn"><a class="nav-link" href="/profile"><i
+                class="fas fa-user"></i><span>Profile</span></a></li>
+          <li class="nav-item" *ngIf="isLoggedIn"><a class="nav-link"><i class="fas fa-sun">
+              </i><span>Météo</span></a>
+          </li>
+          <ul class="navbar-nav text-light" id="accordionSidebar">
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#meteo_widget">
+              <a class="nav-link"><span>Météo d'une ville</span></a>
+            </li>
+          </ul>
+          <li class="nav-item" *ngIf="isLoggedIn"><a class="nav-link">
+              <i class="fab fa-twitter"></i>&nbsp;<span>Twitter</span></a>
+          </li>
+          <ul class="navbar-nav text-light" id="accordionSidebar">
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#twitter_widget_1">
+              <a class="nav-link"><span>Profil d'un utilisateur</span></a>
+            </li>
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#twitter_widget_2">
+              <a class="nav-link"><span>5 derniers tweet d'un utilisateur</span></a>
+            </li>
+          </ul>
+          <li class="nav-item" *ngIf="isLoggedIn"><a class="nav-link">
+              <i class="fas fa-jedi"></i><span>Starwars</span></a>
+          </li>
+          <ul class="navbar-nav text-light" id="accordionSidebar">
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#starwars_widget_1">
+              <a class="nav-link"><span>Planète</span></a>
+            </li>
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#starwars_widget_2">
+              <a class="nav-link"><span>Films</span></a>
+            </li>
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#starwars_widget_3">
+              <a class="nav-link"><span>Vaisseau</span></a>
+            </li>
+          </ul>
+          <li class="nav-item" *ngIf="isLoggedIn"><a class="nav-link">
+              <i class="fas fa-newspaper"></i><span>Actualités</span></a>
+          </li>
+          <ul class="navbar-nav text-light" id="accordionSidebar">
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#news_widget">
+              <a class="nav-link"><span>Actualités d'une ville</span></a>
+            </li>
+          </ul>
+          <li class="nav-item" *ngIf="isLoggedIn"><a class="nav-link">
+              <i class="far fa-smile-beam"></i><span>Fun</span></a>
+          </li>
+          <ul class="navbar-nav text-light" id="accordionSidebar">
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#fun_widget_1">
+              <a class="nav-link"><span>Personne de rick et morty</span></a>
+            </li>
+            <li class="nav-item ml-2" *ngIf="isLoggedIn" data-bs-toggle="modal" data-bs-target="#fun_widget_2">
+              <a class="nav-link"><span>Quelle âge a ton prénom ?</span></a>
+            </li>
+          </ul>
+        </div>
+        <li class="nav-item" *ngIf="isAdmin"><a class="nav-link" href="/admin"><i
+              class="fas fa-user-cog"></i><span>Pannel admin</span></a></li>
+
+
+        <!-- Météo Modal -->
+        <div class="modal fade" id="meteo_widget" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Ajouter le widget météo </h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="create-form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('1')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="city">Ville</label>
+                      <input type="text" class="form-control" formControlName="param_1" id="city" required>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="param_2">
+                    <div class="mb-3">
+                      <label class="form-label" for="refresh_rate">Temps d'actualisation</label>
+                      <input type="text" class="form-control" formControlName="refresh_rate" id="refresh_rate" required>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="create-form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Twitter 1 Modal -->
+        <div class="modal fade" id="twitter_widget_1" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Ajouter le widget profil utilisateur</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="twitter_1_form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('2')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="city">Nom d'utilisateur</label>
+                      <input type="text" class="form-control" formControlName="param_1" id="city" required>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="param_2">
+                    <div class="mb-3">
+                      <label class="form-label" for="refresh_rate">Temps d'actualisation</label>
+                      <input type="text" class="form-control" formControlName="refresh_rate" id="refresh_rate" required>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="twitter_1_form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Twitter 2 Modal -->
+        <div class="modal fade" id="twitter_widget_2" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Ajouter le widget profil utilisateur</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="twitter_2_form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('3')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="city">Nom d'utilisateur</label>
+                      <input type="text" class="form-control" formControlName="param_1" id="city" required>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="param_2">
+                    <div class="mb-3">
+                      <label class="form-label" for="refresh_rate">Temps d'actualisation</label>
+                      <input type="text" class="form-control" formControlName="refresh_rate" id="refresh_rate" required>
+                    </div>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="twitter_2_form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Starwars 1 Modal -->
+        <div class="modal fade" id="starwars_widget_1" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Ajouter une planète</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="starwars_1_form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('4')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="city">Numéro au hasard</label>
+                      <input type="text" class="form-control" formControlName="param_1" id="city" required>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="param_2">
+                    <input type="hidden" class="form-control" formControlName="refresh_rate">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="starwars_1_form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Starwars 2 Modal -->
+        <div class="modal fade" id="starwars_widget_2" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Ajouter un film</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="starwars_2_form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('5')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="city">Numéro au hasard</label>
+                      <input type="text" class="form-control" formControlName="param_1" id="city" required>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="param_2">
+                    <input type="hidden" class="form-control" formControlName="refresh_rate">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="starwars_2_form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Starwars 3 Modal -->
+        <div class="modal fade" id="starwars_widget_3" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Ajouter un vaisseau</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="starwars_3_form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('6')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="city">Choisissez un vaisseau</label>
+                      <select type="text" class="form-control" formControlName="param_1" id="city" required>
+                        <option>Veuillez sélectionner une valeur</option>
+                        <option value="2"> CR90 corvette </option>
+                        <option value="3"> Star Destroyer </option>
+                        <option value="5"> Sentinel-class landing craft </option>
+                        <option value="9"> Death Star </option>
+                        <option value="11"> Y-wing </option>
+                        <option value="12"> X-wing </option>
+                        <option value="13"> TIE Advanced x1 </option>
+                        <option value="15"> Executor </option>
+                        <option value="17"> Rebel transport </option>
+                        <option value="21"> Slave 1 </option>
+                      </select>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="param_2">
+                    <input type="hidden" class="form-control" formControlName="refresh_rate">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="starwars_3_form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- News Modal -->
+        <div class="modal fade" id="news_widget" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Ajouter les informations d'un code postal</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="news_form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('7')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="code">Code du pays (fr,en)</label>
+                      <input type="text" class="form-control" formControlName="param_1" id="code" required>
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label" for="zip_code">Code postal</label>
+                      <input type="text" class="form-control" formControlName="param_2" id="zip_code" required>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="refresh_rate">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="news_form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Fun Modal 1 -->
+        <div class="modal fade" id="fun_widget_1" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Ajouter un personnage de rick et morty</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="fun_1_form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('8')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="city">Numéro au hasard</label>
+                      <input type="text" class="form-control" formControlName="param_1" id="city" required>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="param_2">
+                    <input type="hidden" class="form-control" formControlName="refresh_rate">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="fun_1_form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <!-- Fun Modal 2 -->
+        <div class="modal fade" id="fun_widget_2" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+          <div class="modal-dialog text-dark">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5">Quel âge à ton prénom ?</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form class="form-signin" id="fun_2_form" [formGroup]="createWidgetSubcrForm"
+                  (ngSubmit)="addWidget('9')">
+                  <div class="form">
+                    <h2>Entrez les informations souhaitées</h2>
+                    <div class="mb-3">
+                      <label class="form-label" for="city">Prénom</label>
+                      <input type="text" class="form-control" formControlName="param_1" id="city" required>
+                    </div>
+                    <input type="hidden" class="form-control" formControlName="param_2">
+                    <input type="hidden" class="form-control" formControlName="refresh_rate">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" form="fun_2_form">Ajouter le widget</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Modal -->
+
+        <li class="nav-item" *ngIf="isLoggedIn"><a href class="nav-link" (click)="logout()">LogOut</a></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="d-flex flex-column" id="content-wrapper">
+    <div id="content">
+      <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+        <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop"
+            type="button"><i class="fas fa-bars"></i></button>
+          <ul class="navbar-nav flex-nowrap ms-auto">
+            <div class="d-none d-sm-block topbar-divider"></div>
+            <li class="nav-item" *ngIf="!isLoggedIn"><a href="/login" class="nav-link" routerLink="login">Login</a></li>
+            <li class="nav-item" *ngIf="!isLoggedIn"><a href="/register" class="nav-link"
+                routerLink="register">S'incrire</a></li>
+            <li class="nav-item" *ngIf="isLoggedIn">
+              <a class="nav-link" href="/profile" routerLink="profile">
+                {{ username }}
+              </a>
+            </li>
+            <li class="nav-item" *ngIf="isLoggedIn"><a href class="nav-link" (click)="logout()">LogOut</a></li>
+          </ul>
+        </div>
+      </nav>
+      <router-outlet></router-outlet>
+      <footer class="bg-white sticky-footer">
+        <div class="container my-auto">
+          <div class="text-center my-auto copyright"><span>Copyright © Double Dash 2022</span></div>
+        </div>
+      </footer>
+    </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
+  </div>

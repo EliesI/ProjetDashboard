@@ -1,0 +1,39 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "type": "com.doubledash.config.AppProperties",
+      "sourceType": "com.doubledash.config.AppProperties"
+    },
+    {
+      "name": "app.auth",
+      "type": "com.doubledash.config.AppProperties$Auth",
+      "sourceType": "com.doubledash.config.AppProperties",
+      "sourceMethod": "getAuth()"
+    },
+    {
+      "name": "app.oauth2",
+      "type": "com.doubledash.config.AppProperties$OAuth2",
+      "sourceType": "com.doubledash.config.AppProperties",
+      "sourceMethod": "getOauth2()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.auth.token-expiration-msec",
+      "type": "java.lang.Long",
+      "sourceType": "com.doubledash.config.AppProperties$Auth"
+    },
+    {
+      "name": "app.auth.token-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.doubledash.config.AppProperties$Auth"
+    },
+    {
+      "name": "app.oauth2.authorized-redirect-uris",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.doubledash.config.AppProperties$OAuth2"
+    }
+  ],
+  "hints": []
+}

@@ -1,0 +1,348 @@
+<div class="DragZone" style="min-width: 100%; min-height: 100vh;" *ngIf="isLoggedIn">
+  <div *ngFor="let widget of displayWidget">
+    <!-- Widget 1 -->
+    <div class="weather" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 1">
+      <div class="temperature">
+        {{ widget.temperature}}°
+      </div>
+      <div class="icons">
+        <i class="fas fa-sun"></i>
+      </div>
+      <div class="info">
+        {{ widget.city}}
+      </div>
+      <ul class="list-inline m-0">
+        <li class="list-inline-item">
+          <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+            title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+            (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+        </li>
+        <li class="list-inline-item">
+          <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+            title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+        </li>
+      </ul>
+    </div>
+    <!-- Modal edit -->
+    <div class="modal fade" id="edit_widget{{widget.id}}" tabindex="-1" aria-labelledby="modal" aria-hidden="true">
+      <div class="modal-dialog text-dark">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Ajouter le widget météo </h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form class="form-signin" id="edit-form" [formGroup]="editWidgetSubcrForm"
+              (ngSubmit)="editWidget(widget.id)">
+              <div class="form">
+                <h2>Entrez les informations souhaitées</h2>
+                <input type="hidden" formControlName="id" [(ngModel)]="currentWidget.id" required>
+                <div class="mb-3">
+                  <label class="form-label" for="city">Param 1</label>
+                  <input type="text" class="form-control" formControlName="param_1" id="city"
+                    [(ngModel)]="currentWidget.param_1" required>
+                </div>
+                <div *ngIf="widget.widget_id != 7">
+                  <input type="hidden" class="form-control" formControlName="param_2"
+                    [(ngModel)]="currentWidget.param_2">
+                </div>
+                <div *ngIf="widget.widget_id == 7">
+                  <label class="form-label" for="param_2">Param 2</label>
+                  <input type="text" class="form-control" formControlName="param_2" id="param_2"
+                    [(ngModel)]="currentWidget.param_2" required>
+                </div>
+                <div class="mb-3" *ngIf="widget.widget_id == 1 || widget.widget_id == 2 || widget.widget_id == 3">
+                  <label class="form-label" for="refresh_rate">Temps d'actualisation</label>
+                  <input type="text" class="form-control" formControlName="refresh_rate" id="refresh_rate"
+                    [(ngModel)]="currentWidget.refresh_rate" required>
+                </div>
+                <input type="hidden" class="form-control" formControlName="refresh_rate"
+                  [(ngModel)]="currentWidget.refresh_rate"
+                  *ngIf="widget.widget_id != 1 && widget.widget_id != 2 && widget.widget_id != 3" required>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" form="edit-form">Ajouter le widget</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Widget 2 -->
+    <div class="DragItem" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 2">
+      <div class="post">
+        <div class="post__avatar">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item">
+              <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+                (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+            </li>
+            <li class="list-inline-item">
+              <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+            </li>
+          </ul>
+          <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="" />
+        </div>
+        <div class="post__body">
+          <div class="post__header">
+            <div class="post__headerText">
+              <h3>
+                {{ widget.name}}
+                <span class="post__headerSpecial"><span class="material-icons post__badge">
+                  </span>@{{ widget.username}}</span>
+              </h3>
+            </div>
+            <div class="post__headerDescription">
+              <p>{{ widget.description}}.</p>
+            </div>
+            <div class="post__headerDescription">
+              <p>Nombre de tweets : {{widget.public_metrics.tweet_count}}</p>
+              <p>Nombre de followers : {{widget.public_metrics.following_count}} | Nombre de followers :
+                {{widget.public_metrics.followers_count}}</p>
+            </div>
+          </div>
+          <img src="https://pbs.twimg.com/profile_images/1518927384073932800/VLU0v1dD_400x400.jpg" alt="" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Widget 3 -->
+    <div class="DragItem" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 3">
+      <div class="post">
+        <div class="post__avatar">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item">
+              <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+                (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+            </li>
+            <li class="list-inline-item">
+              <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+            </li>
+          </ul>
+          <img src="https://i.pinimg.com/originals/a6/58/32/a65832155622ac173337874f02b218fb.png" alt="" />
+        </div>
+        <div class="post__body">
+          <div class="post__header">
+            <div class="post__headerText">
+              <h3>
+                {{widget.username}}
+                <span class="post__headerSpecial"><span class="material-icons post__badge">
+                  </span>@{{widget.username}}</span>
+              </h3>
+            </div>
+            <div class="post__headerDescription" *ngFor="let tweet of widget">
+              <p>{{tweet.contenu}}</p>
+              <p><i class="fas fa-undo-alt"></i>{{tweet.rt}} <i class="fas fa-comment-dots"></i> {{tweet.replies}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Widget 4 -->
+    <div class="DragItem" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 4">
+      <div class="post">
+        <div class="post__avatar">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item">
+              <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+                (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+            </li>
+            <li class="list-inline-item">
+              <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+            </li>
+          </ul>
+        </div>
+        <div class="post__body">
+          <div class="post__header">
+            <div class="post__headerText">
+              <h3> {{widget.name}}</h3>
+              <p>Climat : {{widget.climate}}</p>
+              <p>Période de rotation : {{widget.rotation_period}}</p>
+              <p>Population : {{widget.population}}</p>
+              <p>Périod orbital : {{widget.orbital_period}}</p>
+              <p>Diamètre : {{widget.diameter}}</p>
+              <p>Gravité : {{widget.gravity}}</p>
+              <p>Terrain : {{widget.terrain}}</p>
+            </div>
+            <div class="post__headerDescription">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Widget 5 -->
+    <div class="DragItem" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 5">
+      <div class="post">
+        <div class="post__avatar">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item">
+              <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+                (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+            </li>
+            <li class="list-inline-item">
+              <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+            </li>
+          </ul>
+        </div>
+        <div class="post__body">
+          <div class="post__header">
+            <div class="post__headerText">
+              <h3> {{widget.title}}</h3>
+              <p>Date de sortie : {{widget.release_date}}</p>
+              <p>Directeur : {{widget.director}}</p>
+              <p>Réalisateur : {{widget.producer}}</p>
+              <p>Synopsis : {{widget.opening_crawl}}</p>
+            </div>
+            <div class="post__headerDescription">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Widget 6 -->
+    <div class="DragItem" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 6">
+      <div class="post">
+        <div class="post__avatar">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item">
+              <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+                (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+            </li>
+            <li class="list-inline-item">
+              <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+            </li>
+          </ul>
+        </div>
+        <div class="post__body">
+          <div class="post__header">
+            <div class="post__headerText">
+              <h3>
+                {{widget.name}}
+                <p>Modèle : {{widget.model}}</p>
+                <p>Classe : {{widget.starship_class}}</p>
+                <p>Fabricant : {{widget.manufacturer}}</p>
+                <p>Capacité : {{widget.cargo_capacity}}</p>
+                <p>Vitesse atmosphérique : {{widget.max_atmosphering_speed}}</p>
+                <p>Prix : {{widget.cost_in_credits}}</p>
+              </h3>
+            </div>
+            <div class="post__headerDescription">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Widget 7 -->
+    <div class="DragItem" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 7">
+      <div class="post">
+        <div class="post__avatar">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item">
+              <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+                (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+            </li>
+            <li class="list-inline-item">
+              <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+            </li>
+          </ul>
+        </div>
+        <div class="post__body">
+          <div class="post__header">
+            <div class="post__headerText">
+              <h3>
+                <p>{{widget.country_abbreviation}}</p>
+                <p>{{widget.country}}, {{widget.place_name}} {{widget.post_code}}</p>
+                <p>{{widget.state}}</p>
+                <p>{{widget.latitude}} | {{widget.longitude}}</p>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Widget 8 -->
+    <div class="DragItem" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 8">
+      <div class="post">
+        <div class="post__avatar">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item">
+              <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+                (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+            </li>
+            <li class="list-inline-item">
+              <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+            </li>
+          </ul>
+        </div>
+        <div class="post__body">
+          <div class="post__header">
+            <div class="post__headerText">
+              <h3>
+                {{widget.name}}
+              </h3>
+              <p>Genre : {{widget.gender}}</p>
+              <p>Espèce : {{widget.species}}</p>
+              <p>Création : {{widget.created}}</p>
+              <img src={{widget.image}} alt="" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Widget 9 -->
+    <div class="DragItem" cdkDragBoundary=".DragZone" cdkDrag *ngIf="widget.widget_id == 9">
+      <div class="post">
+        <div class="post__avatar">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item">
+              <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Edit" data-bs-toggle="modal" [attr.data-bs-target]="'#edit_widget'+widget.id"
+                (click)="loadWidget(widget.id)"><i class="fa fa-edit "></i></button>
+            </li>
+            <li class="list-inline-item">
+              <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top"
+                title="Delete" (click)="deleteWidget(widget.id)"><i class="fa fa-trash"></i></button>
+            </li>
+          </ul>
+        </div>
+        <div class="post__body">
+          <div class="post__header">
+            <div class="post__headerText">
+              <h3>
+                Quelle âge a {{widget.name}} ?
+              </h3>
+              {{widget.age}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="DragZone" style="min-width: 100%; min-height: 100vh;" *ngIf="!isLoggedIn">
+  <div class="weather" cdkDragBoundary=".DragZone" cdkDrag>
+    <div class="info">
+      Veuillez vous connecter pour avoir accès à vos widgets.
+    </div>
+  </div>
+</div>

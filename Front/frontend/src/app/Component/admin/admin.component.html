@@ -1,0 +1,88 @@
+<section>
+    <div id="users">
+        <div class="container mt-5 mb-5">
+            <div class="row">
+                <div class="col-auto col-sm-12 col-md-12 col-lg-4 col-xl-4 mb-5" *ngFor="let user of users">
+                    <div class="bg-light border rounded shadow card" data-bss-hover-animate="pulse">
+                        <div class="card-body">
+                            <h3 class="card-title">ID: {{ user.id }}</h3>
+                            <p class="card-text"></p>
+                            <h5 class="card-sub-title">Nom: {{ user.displayName }}</h5>
+                            <p id="lorem">Mail: {{ user.email }}</p>
+                            <button class="btn btn-outline-success" type="button" (click)="deleteUsers(user.id)">
+                                Supprimer
+                            </button>
+                            <button class="btn btn-outline-success" type="button" data-bs-toggle="modal"
+                                [attr.data-bs-target]="'#user_modal'+user.id" (click)="loadCurrentUser(user.id)">
+                                Modifier
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="user_modal{{user.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Modifier
+                                        {{user.id}}
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-signin" [formGroup]="patchUserForm" (ngSubmit)="patchUsers()"
+                                        [attr.id]="'edit_form_'+user.id">
+                                        <div class="form">
+                                            <h2>Entrez les informations de l'utilisateur</h2>
+                                            <input type="hidden" formControlName="id" [(ngModel)]="currentUser.id" required>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="displayName">Username</label>
+                                                <input type="text" class="form-control"
+                                                    [(ngModel)]="currentUser.displayName" formControlName="displayName"
+                                                    id="displayName" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="email">Mail</label>
+                                                <input type="text" class="form-control"
+                                                    [(ngModel)]="currentUser.email" formControlName="email" id="email"
+                                                    required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label" for="password">Password</label>
+                                                <input type="password" class="form-control"
+                                                    [(ngModel)]="currentUser.password" formControlName="password"
+                                                    id="password" required>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary" [attr.form]="'edit_form_'+user.id">
+                                        Modifier l'utilisateur
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Annuler
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Modal -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="users.length == 0" id="empty-users">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    Aucun users
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</section>
